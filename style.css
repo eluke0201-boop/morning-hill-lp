@@ -46,6 +46,8 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* 日本語の禁則処理を強める（長音「ー」「。」などが行頭に来ない） */
+  line-break: strict;
 }
 
 img { max-width: 100%; display: block; }
