@@ -29,13 +29,46 @@
 
   --container: 1120px;
   --header-h: 72px;
+  --banner-h: 36px;
+}
+
+/* デザインモック告知バー（最上部・固定） */
+.demo-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--banner-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0 16px;
+  z-index: 101;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.demo-banner b {
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0 4px;
+}
+.demo-banner__short { display: none; }
+.demo-banner__full { display: inline; }
+@media (max-width: 640px) {
+  .demo-banner__full { display: none; }
+  .demo-banner__short { display: inline; }
+  .demo-banner { font-size: 11px; padding: 0 12px; }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--header-h);
+  scroll-padding-top: calc(var(--header-h) + var(--banner-h));
 }
 
 body {
@@ -65,7 +98,7 @@ button { font: inherit; }
 
 .site-header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: var(--banner-h); left: 0; right: 0;
   height: var(--header-h);
   z-index: 100;
   background: rgba(255, 252, 247, 0.85);
@@ -145,7 +178,7 @@ button { font: inherit; }
 
 .hero {
   min-height: 100vh;
-  padding-top: var(--header-h);
+  padding-top: calc(var(--header-h) + var(--banner-h));
   position: relative;
   display: flex;
   align-items: center;
@@ -309,8 +342,24 @@ button { font: inherit; }
 }
 .title-line + .title-line { padding-left: 1.8em; }
 
+/* 3段目の補助 span（モバイルで block 化 + さらに字下げ） */
+.title-line__sub { display: inline; }
+
 @media (max-width: 640px) {
   .title-line + .title-line { padding-left: 0.8em; }
+
+  /* モバイルでは熟語（時間 等）を割らない */
+  .hero-title .title-line,
+  .section-title .title-line {
+    word-break: keep-all;
+    overflow-wrap: anywhere;  /* それでも収まらない時のフォールバック */
+  }
+
+  /* 3段目を独立行にして、2段目よりさらに右へ */
+  .title-line__sub {
+    display: block;
+    padding-left: 1.4em;  /* 2段目の 0.8em より深く */
+  }
 }
 .section-lead {
   font-size: 16px;
@@ -741,7 +790,7 @@ button { font: inherit; }
 
   .nav {
     position: fixed;
-    inset: var(--header-h) 0 0 0;
+    inset: calc(var(--header-h) + var(--banner-h)) 0 0 0;
     background: var(--bg);
     transform: translateX(100%);
     transition: transform .3s ease;
